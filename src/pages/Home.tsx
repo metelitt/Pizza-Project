@@ -7,9 +7,17 @@ import Pagination from '../components/Pagination';
 import qs from "qs"
 import { useNavigate } from 'react-router-dom';
 import { useSelector} from 'react-redux'
-import { selectFilter, setCategoryId ,setCurrentPage,setFilters} from '../redux/slices/filterSlice';
-import { SearchPizzaParams, fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
+
 import { useAppDispatch } from '../redux/store';
+import { selectFilter } from '../redux/filter/selectors';
+import { setCategoryId, setCurrentPage, setFilters } from '../redux/filter/slice';
+import { fetchPizzas } from '../redux/pizzaSlice/asncActions';
+import { SearchPizzaParams } from '../redux/pizzaSlice/types';
+import { selectPizzaData } from '../redux/pizzaSlice/selectors';
+
+
+
+
 
 const Home:React.FC=()=> {
     const navigate=useNavigate()
@@ -17,8 +25,9 @@ const Home:React.FC=()=> {
     const isSearh=useRef(false)
     const isMount=useRef(false)
 
+    const { items, status } = useSelector(selectPizzaData);
     const {categoryId,sort,currentPage,searchValue}=useSelector(selectFilter)
-    const {items,status}=useSelector(selectPizzaData)
+    
 
     const  onClickCategory=React.useCallback(
       (id:number)=>{
